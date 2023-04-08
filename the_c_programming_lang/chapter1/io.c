@@ -30,14 +30,19 @@ void count_text() {
         ++nc;
         if (c == '\n') {
             ++nl;
+            printf("\n");
         }
         if (c == '\t') {
             ++nt;
+            printf("\n");
         }
         if (c == ' ') {
             ++ns;
+            printf("\n");
         }
-
+        else {
+            printf("%c", c);
+        }
     }
     printf("Characters\t%ld\n", nc);
     printf("Lines\t\t%ld\n", nl);
