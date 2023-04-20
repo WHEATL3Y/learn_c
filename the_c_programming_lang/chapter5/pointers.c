@@ -6,5 +6,9 @@ void main(void) {
      
     // Create a two dimensional array
     int b[10][10];
+     
+    // Print a pointer
+    char printPointer = 1;
+    printf("%p", &printPointer);
 }
 
