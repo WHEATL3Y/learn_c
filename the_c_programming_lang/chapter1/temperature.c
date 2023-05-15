@@ -1,4 +1,13 @@
+// The C Programming Language
+// Excercise 1-3, 1-4, 1-5
+// Author: Jacob Christensen
+
 #include <stdio.h>
+#include <stdbool.h>
+
+#define LOWER -100
+#define UPPER 100
+#define STEP 10
 
 float f2c(float temperatureF) {
     // Convert Fahrenheit to Celsius
@@ -39,13 +48,49 @@ void convertRange(int lower, int upper, int step, char from) {
     }
 }
 
+void convertRangeFor(int lower, int upper, int step, char from, bool reverse) {
+    // This is ugly because I wanted type casting examples
+    // Exercise 1-5
+
+    float temperatureFrom;
+    float temperatureTo;
+    if (from == 'f') {
+        printf("Fahrenheit\tCelsius\n");
+    }
+    else {
+        printf("Celsius\t\tFahrenheit\n");
+    }
+
+    if (reverse == true) {
+        temperatureFrom = (float) upper;
+        for (;temperatureFrom >= lower; temperatureFrom -= step) {
+            if (from == 'f') {
+                temperatureTo = f2c(temperatureFrom);
+            }
+            else {
+                temperatureTo = c2f(temperatureFrom);
+            }
+            printf("%7.2f\t\t%7.2f\n", temperatureFrom, temperatureTo);
+        } 
+    }
+    else {
+        temperatureFrom = (float) lower;
+        for (;temperatureFrom <= upper; temperatureFrom += step) {
+            if (from == 'f') {
+                temperatureTo = f2c(temperatureFrom);
+            }
+            else {
+                temperatureTo = c2f(temperatureFrom);
+            }
+            printf("%7.2f\t\t%7.2f\n", temperatureFrom, temperatureTo);
+        }
+    }
+}
+
 int main(void) {
 
-    int lower = -100;
-    int upper = 100;
-    int step = 10;
-
-    convertRange(lower, upper, step, 'f');
-    convertRange(lower, upper, step, 'c');
+    convertRange(LOWER, UPPER, STEP, 'f');
+    convertRange(LOWER, UPPER, STEP, 'c');
+    convertRangeFor(LOWER, UPPER, STEP, 'f', true);
     return 0;
 } 
