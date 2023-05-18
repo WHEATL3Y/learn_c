@@ -1,5 +1,5 @@
 // The C Programming Language
-// Excercise 1-3, 1-4, 1-5
+// Excercise 1-3, 1-4, 1-5, 1-15
 // Author: Jacob Christensen
 
 #include <stdio.h>
