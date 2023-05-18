@@ -31,7 +31,7 @@ int main(void) {
         }
     }
 
-    printf("'=' = 10 occurances\n");
+    printf("'=' = 10 occurences\n");
     for (i = 0; i < 9; i++) {
         printf("%d  : ", i + 1);
         for (j = wordLengths[i] / 10; j > 0; j--) {
