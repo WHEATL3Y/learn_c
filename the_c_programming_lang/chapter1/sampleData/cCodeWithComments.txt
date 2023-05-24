@@ -1,0 +1,198 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+ 
+ 
+#define MAX_FILE_NAME 20
+#define MAX_FILE_SIZE 1024
+ 
+ 
+void readSourceFile(FILE *, char[], const int);
+void writeToFile(FILE *, char[]);
+ 
+ 
+int main()
+{
+    FILE *sourceFile, *outputFile;
+    char srcFileName[MAX_FILE_NAME], outFileName[MAX_FILE_NAME], srcData[MAX_FILE_SIZE];
+ 
+ 
+    printf("What is the name or path of the source file that you're trying to access?\n");
+    fgets(srcFileName, MAX_FILE_NAME, stdin);
+    printf("\nWhat is the name or path of this output file?\n");
+    fgets(outFileName, MAX_FILE_NAME, stdin);
+ 
+ 
+    // Remove the newline as they will cause the FILE pointers to remain NULL when trying to open the file.
+    srcFileName[strcspn(srcFileName, "\n")] = '\0';
+    outFileName[strcspn(outFileName, "\n")] = '\0';
+ 
+ 
+    sourceFile = fopen(srcFileName, "r");
+    outputFile = fopen(outFileName, "w");
+ 
+ 
+    if(sourceFile == NULL)
+    {
+        fprintf(stderr, "\n%s: %s.\n", srcFileName, strerror(errno));
+        return EXIT_FAILURE;
+    }
+    else if(outputFile == NULL) // This case is if source file opens but output file does not.
+    {
+        const int errnum = errno; // I'm using a local variable to represent errno because many functions set it when an error occurs.
+        fclose(sourceFile); // If the source files is open, but the source file is not open then close the source file prematurely.
+        fprintf(stderr, "\n%s: %s.\n", outFileName, strerror(errnum));
+        return EXIT_FAILURE;
+    }
+ 
+ 
+    readSourceFile(sourceFile, srcData, MAX_FILE_SIZE);
+    writeToFile(outputFile, srcData);
+ 
+ 
+    // If both of them are opened and every thing went smoothly, then close them.
+    fclose(sourceFile);
+    fclose(outputFile);
+ 
+ 
+    return 0;
+}
+ 
+ 
+void writeToFile(FILE *filePtr, char srcData[])
+{
+    fputs(srcData, filePtr);
+}
+ 
+ 
+void readSourceFile(FILE *filePtr, char srcData[], const int SIZE_OF_FILE)
+{
+    int i = 0; // This is an index counter for srcData
+    int j = 0; // this is an index counter for tempArray
+    int ch = 0;    // The character that will compared.
+    int state = 0; // To determine if we are in a comment and still in a comment.
+    int charNotInComments = 0; // The characters that we want to keep.
+    char tempArray[SIZE_OF_FILE];
+ 
+ 
+    // Once we reach the end of the file, we stop reading data.
+    while(fgets(tempArray, SIZE_OF_FILE, filePtr) != NULL)
+    {
+        ch = tempArray[j];
+        j++;
+ 
+ 
+        while(ch != '\n') // until we reach the end of the line.
+        {
+            if(ch == '/') // The start of a comment.
+            {
+                ch = tempArray[j];
+                j++;
+ 
+ 
+                if(ch == '*')
+                {
+                    ch = tempArray[j];
+                    j++;
+                    state = 1;
+ 
+ 
+                    while(ch != '\n' && state == 1)
+                    {
+                        ch = tempArray[j];
+                        j++;
+ 
+ 
+                        if(ch == '*')
+                        {
+                            ch = tempArray[j];
+                            j++;
+ 
+ 
+                            if(ch == '/')
+                            {
+                                state = 0;
+                            }
+                        }
+                    }
+                }
+                else if(ch == '/')
+                {
+                    while(ch != '\n')
+                    {
+                        ch = tempArray[j];
+                        j++;
+                    }
+                }
+            }
+            else if(state == 1) // If we are still in a comment.
+            {
+                while(ch != '\n' && state == 1)
+                {
+                    if(ch == '*')
+                    {
+                        ch = tempArray[j];
+                        j++;
+ 
+ 
+                        if(ch == '/')
+                        {
+                            state = 0;
+                        }
+                    }
+ 
+ 
+                    ch = tempArray[j];
+                    j++;
+                }
+            }
+            else if(ch == '"') // if we find an opening double quotation mark.
+            {
+                srcData[i] = ch;
+                i++;
+                ch = tempArray[j];
+                j++;
+                charNotInComments++;
+ 
+ 
+                while(ch != '"')
+                {
+                    srcData[i] = ch;
+                    i++;
+                    ch = tempArray[j];
+                    j++;
+                    charNotInComments++;
+                }
+ 
+ 
+                srcData[i] = ch;
+                i++;
+                ch = tempArray[j];
+                j++;
+                charNotInComments++;
+            }
+            else
+            {
+                srcData[i] = ch;
+                i++;
+                ch = tempArray[j];
+                j++;
+                charNotInComments++;
+            }
+        }
+ 
+ 
+        if(charNotInComments > 0) // if there were characters worth keeping, skip this
+        {
+            srcData[i] = ch;
+            i++;
+            srcData[i] = '\0';
+            charNotInComments = 0;
+        }
+ 
+ 
+        ch = 0;
+        j = 0;
+    }
+}

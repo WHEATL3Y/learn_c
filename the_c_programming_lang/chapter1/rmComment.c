@@ -14,7 +14,6 @@ int readText(char s[]) {
     int i;
     
     for (i = 0; (character = getchar()) != EOF; i++) {
-        printf("%c", character);
         s[i] = character;
     }
     s[i] = '\0';
@@ -23,15 +22,39 @@ int readText(char s[]) {
 
 void removeComment(char from[], char to[]) {
     /* Remove old style comments like this one */
-
+    /* This is a "quote in a comment", 'so is this' */
+    printf("These are testing /*comments*/ //comments");
     char stage[MAXLENGTH];
     int inComment = 0;
     int inQuote = 0;
+    int quoteDelimeter;
+    int inLine = 0;
+    int column = 0;
     int character;
-    int fromI;
-    int toI;
+    int fromI = 0;
+    int toI = 0;
 
     while ((character = from[fromI]) != '\0') {
+        /*if (!inComment && (character == '"' || character == '\'')) {
+            if (inQuote) {
+                inQuote = 0;
+            }
+            else {
+                inQuote = 1;
+            }
+        }*/
+        if (!inComment && (character == '\"' || character == '\'')) {
+            if (inQuote && character == quoteDelimeter) {
+                inQuote = 0;
+            }
+            else if (inQuote && quoteDelimeter != character) {
+                ;
+            }
+            else {
+                quoteDelimeter = character;
+                inQuote = 1;
+            }
+        }
         if (!inComment && character == '/' && from[fromI + 1] == '*' && !inQuote) {
             inComment = 1;
             fromI += 2;
@@ -46,13 +69,12 @@ void removeComment(char from[], char to[]) {
         
         else if (inComment) {
             fromI++;
+            continue;
         }
 
-        else {
-            stage[toI] = from[fromI];
-            toI++;
-            fromI++;
-        }
+        stage[toI] = from[fromI];
+        toI++;
+        fromI++;
     }
 
     stage[toI] = '\0';
@@ -63,15 +85,44 @@ void removeComment(char from[], char to[]) {
     toI = 0;
 
     while ((character = stage[fromI]) != '\0') {
+        column++;
+        if (character == '\n') {
+            column = 0;
+        }
+        if (!inComment && (character == '\"' || character == '\'')) {
+            if (inQuote && character == quoteDelimeter) {
+                inQuote = 0;
+            }
+            else if (inQuote && quoteDelimeter != character) {
+                ;
+            }
+            else {
+                quoteDelimeter = character;
+                inQuote = 1;
+            }
+        }
         if (!inComment && character == '/' && stage[fromI + 1] == '/' && !inQuote) {
+            
+            if (column != 1) {
+                inLine = 1;
+            }
+            else {
+                inLine = 0;
+            }
+
             inComment = 1;
             fromI += 2;
             continue;
         }
-        
         else if (inComment && character == '\n') {
             fromI++;
             inComment = 0;
+
+            if (inLine) {
+                to[toI] = '\n';
+                toI++;
+            }
+
             continue;
         }
         
