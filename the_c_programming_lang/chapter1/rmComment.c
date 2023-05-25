@@ -23,7 +23,6 @@ int readText(char s[]) {
 void removeComment(char from[], char to[]) {
     /* Remove old style comments like this one */
     /* This is a "quote in a comment", 'so is this' */
-    printf("These are testing /*comments*/ //comments");
     char stage[MAXLENGTH];
     int inComment = 0;
     int inQuote = 0;
@@ -44,7 +43,11 @@ void removeComment(char from[], char to[]) {
             }
         }*/
         if (!inComment && (character == '\"' || character == '\'')) {
-            if (inQuote && character == quoteDelimeter) {
+            if (inQuote && character == quoteDelimeter && from[fromI - 1] != 92) {
+                inQuote = 0;
+                /* stage[toI++] = 'o'; */
+            }
+            else if (inQuote && character == quoteDelimeter && from[fromI - 1] == 92 && from[fromI - 2] == 92) {
                 inQuote = 0;
             }
             else if (inQuote && quoteDelimeter != character) {
@@ -52,6 +55,7 @@ void removeComment(char from[], char to[]) {
             }
             else {
                 quoteDelimeter = character;
+                /* stage[toI++] = 'i'; */
                 inQuote = 1;
             }
         }
@@ -90,7 +94,10 @@ void removeComment(char from[], char to[]) {
             column = 0;
         }
         if (!inComment && (character == '\"' || character == '\'')) {
-            if (inQuote && character == quoteDelimeter) {
+            if (inQuote && character == quoteDelimeter && from[fromI - 1] != '\\') {
+                inQuote = 0;
+            }
+            else if (inQuote && character == quoteDelimeter && from[fromI - 1] == 92 && from[fromI - 2] == 92) {
                 inQuote = 0;
             }
             else if (inQuote && quoteDelimeter != character) {
