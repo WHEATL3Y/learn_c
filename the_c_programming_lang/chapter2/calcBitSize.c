@@ -6,26 +6,32 @@
 
 void unsignedInt(void) {
 
-    unsigned int test;
+    unsigned int uint;
+    unsigned int mask;
     int length;
-    int min = 0;
-    unsigned int max;
 
-    for (length = 1, test = 2; test >= 1; length++, test <<= 1) {
-        if (test > max) {
-            max = test;
-        }
+    for (uint = 1, mask = 1, length = 0; mask != 0; mask <<= 1, uint = uint | mask, length++) {
+        ;
     }
-    // TODO: This is retuning an answer 1 bit short, fix.
-    printf("Unsigned Int:\n\tLength: %d\n\tMin: %d\n\tMax: %u\n", length, min, max);
+    printf("Unsigned Int\n\tLength: %u\n\tMin: 0\n\tMax: %u\n", length, uint);
 }
 
-/* int signedInt(void) { */
+/* void signedInt(void) { */
 /*  */
+/*     int sint; */
+/*     int mask; */
+/*     int length; */
+/*  */
+/*     for (sint = 1, mask = 1, length = 0; mask > 0; mask <<= 1, sint = sint | mask, length++) { */
+/*         printf("%d\n", sint); */
+/*     } */
+/*      */
+/*     printf("Signed Int\n\tLength: %d\n\tMin: %d\n\tMax: %d\n", length, sint, sint >> 3); */
 /* } */
 
 int main(void) {
 
     unsignedInt();
+    /* signedInt(); */
     return 0;
 }
