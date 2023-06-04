@@ -16,22 +16,27 @@ void unsignedInt(void) {
     printf("Unsigned Int\n\tLength: %u\n\tMin: 0\n\tMax: %u\n", length, uint);
 }
 
-/* void signedInt(void) { */
-/*  */
-/*     int sint; */
-/*     int mask; */
-/*     int length; */
-/*  */
-/*     for (sint = 1, mask = 1, length = 0; mask > 0; mask <<= 1, sint = sint | mask, length++) { */
-/*         printf("%d\n", sint); */
-/*     } */
-/*      */
-/*     printf("Signed Int\n\tLength: %d\n\tMin: %d\n\tMax: %d\n", length, sint, sint >> 3); */
-/* } */
+void signedInt(void) {
+
+    int sint;
+    int mask;
+    int length;
+    int max;
+    int min;
+
+    for (sint = 1, mask = 1, length = 1; mask > 0; mask <<= 1, sint = sint | mask, length++) {
+        ;
+    }
+   
+    min = mask;
+    max = ~mask;
+
+    printf("Signed Int\n\tLength: %d\n\tMin: %d\n\tMax: %d\n", length, min, max);
+}
 
 int main(void) {
 
     unsignedInt();
-    /* signedInt(); */
+    signedInt();
     return 0;
 }
