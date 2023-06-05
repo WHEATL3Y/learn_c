@@ -1,5 +1,6 @@
 // The C Programming Language
 // Excercise 2-3 
+// htoi.c: Convert hex string to int decimal value
 // Author: Jacob Christensen
 
 #include <stdio.h>
@@ -7,11 +8,14 @@
 #include <math.h>
 
 int htoi(char s[]) {
-    
-    int i = 0;
+   
+    // Hex to decimal conversion example
+    // 7CF = (7 * 16^2) + (12 * 16^1) + (15 * 16^0)
+
     int c;
-    int value = 0;
     int charVal;
+    int i = 0;
+    int value = 0;
     int length = strlen(s) - 1;
 
     if (s[0] == '0' && s[1] == 'x' || s[1] == 'X') {
