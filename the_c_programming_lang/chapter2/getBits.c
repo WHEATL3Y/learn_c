@@ -17,6 +17,6 @@ unsigned getbits(unsigned x, int p, int n) {
 int main(void) {
 
 
-    printf("%u\n", getbits(254u, 6, 2));
+    printf("%u\n", getbits(255u, 6, 2));
     return 0;
 }
