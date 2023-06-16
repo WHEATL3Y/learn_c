@@ -45,6 +45,7 @@ void expand(char s1[], char s2[]) {
     char start;
     char end;
     char s3[128];
+    char s4[] = "-";
     char c;
     int i;
     int j;
@@ -52,8 +53,7 @@ void expand(char s1[], char s2[]) {
     for (i = 0; (c = s1[i++]) != '\0'; ) {
         // Look for leading and trailing - 
         if (c == '-' && (i - 1 == 0 || s1[i] == '\0')) {
-            // Do nothing for now
-            return;
+            stringConcat(s2, s4);
         }
         else if (c == '-') {
             start = s1[i - 2];
@@ -66,7 +66,7 @@ void expand(char s1[], char s2[]) {
 
 int main(void) {
 
-    char string[] = "a-z";
+    char string[] = "-a-zA-Z0-9-";
     char string1[128];
 
     expand(string, string1);
