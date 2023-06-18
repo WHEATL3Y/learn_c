@@ -1,5 +1,5 @@
 // The C Programming Language
-// Excercise: itoa.c 
+// Excercise: 3-4 
 // Author: Jacob Christensen
 
 #include <stdio.h>
