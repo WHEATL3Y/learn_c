@@ -1,10 +1,11 @@
 // The C Programming Language
-// Excercise: 4-3, 4-4 
+// Excercise: 4-3, 4-4, 4-5
 // Author: Jacob Christensen
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 #define MAXVAL 100
 #define MAXOP 100
@@ -164,16 +165,15 @@ int main(void) {
                 push(pop() + pop());
                 break;
             case '*':
-                op2 = pop();
-                push(pop() * op2);
+                push(pop() * pop());
                 break;
             case '-':
-                op2 = pop();
-                push(pop() - op2);
+                swap();
+                push(pop() - pop());
                 break;
             case '/':
                 if ((op2 = pop()) != 0.0) {
-                    push (pop() / op2);
+                    push(pop() / op2);
                 }
                 else {
                     printf("error: zero divisor");
@@ -187,24 +187,13 @@ int main(void) {
                     printf("error: zero divisor");
                 }
                 break;
+            case '^':
+                push(pow(pop(), pop()));
             case '\n':
                 printf("\t%.8g\n", pop());
                 break;
         }
     }
-
-    clear();
-    push(1.0);
-    push(2.0);
-    push(3.0);
-    print(3);
-
-    double val1[MAXVAL];
-    duplicate(val, val1);
-    printf("%lf, %lf, %lf\n", val1[0], val1[1], val1[2]);
-
-    swap();
-    print(3);
 
     return 0;
 
