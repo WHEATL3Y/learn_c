@@ -1,5 +1,5 @@
 // The C Programming Language
-// Excercise: 4-3 
+// Excercise: 4-3, 4-4 
 // Author: Jacob Christensen
 
 #include <stdio.h>
@@ -16,6 +16,10 @@ int bufp = 0;
 
 int sp = 0;
 double val[MAXVAL];
+
+void clear(void) {
+    sp = 0;
+}
 
 int getch(void) {
 
@@ -102,6 +106,47 @@ double pop(void) {
 
 }
 
+void swap(void) {
+    // Swap the top two elements on the stack
+
+    int op1;
+    int op2;
+
+    if (sp >= 1) {
+        op1 = pop();
+        op2 = pop();
+        push(op2);
+        push(op1);
+    }
+    else {
+        printf("error: not enough values in stack\n");
+    }
+}
+
+void duplicate(int s1[], int s2[]) {
+
+    // copy the contents of s1 to s2
+    
+    int tsp = sp;
+
+    for (;tsp >= 0; tsp--) {
+        s2[tsp] = s1[tsp];
+    }
+
+}
+
+void print(int n) {
+
+    // print the top n elements from the stack, don't modify the stack
+
+    int tsp = sp;
+
+    for (;tsp >= 0;) {
+        printf("%lf, ", val[tsp--]);
+    }
+    printf("\n");
+}
+
 int main(void) {
 
     int type;
@@ -146,6 +191,12 @@ int main(void) {
                 break;
         }
     }
+
+    clear();
+    push(1.0);
+    push(2.0);
+    push(3.0);
+    print(3);
 
     return 0;
 
