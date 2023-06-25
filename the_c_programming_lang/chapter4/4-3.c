@@ -115,17 +115,17 @@ void swap(void) {
     if (sp >= 1) {
         op1 = pop();
         op2 = pop();
-        push(op2);
         push(op1);
+        push(op2);
     }
     else {
         printf("error: not enough values in stack\n");
     }
 }
 
-void duplicate(int s1[], int s2[]) {
+void duplicate(double s1[], double s2[]) {
 
-    // copy the contents of s1 to s2
+    // Copy the contents of s1 to s2
     
     int tsp = sp;
 
@@ -137,13 +137,14 @@ void duplicate(int s1[], int s2[]) {
 
 void print(int n) {
 
-    // print the top n elements from the stack, don't modify the stack
+    // Print the top n elements from the stack, don't modify the stack.
 
     int tsp = sp;
 
-    for (;tsp >= 0;) {
-        printf("%lf, ", val[tsp--]);
+    for (;tsp > 0;) {
+        printf("%lf, ", val[--tsp]);
     }
+
     printf("\n");
 }
 
@@ -196,6 +197,13 @@ int main(void) {
     push(1.0);
     push(2.0);
     push(3.0);
+    print(3);
+
+    double val1[MAXVAL];
+    duplicate(val, val1);
+    printf("%lf, %lf, %lf\n", val1[0], val1[1], val1[2]);
+
+    swap();
     print(3);
 
     return 0;
