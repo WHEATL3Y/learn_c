@@ -1,10 +1,11 @@
 // The C Programming Language
-// Excercise: 4-3
+// Excercise: 4-5
 // Author: Jacob Christensen
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 
 #define MAXVAL 100
 #define MAXOP 100
@@ -16,6 +17,10 @@ int bufp = 0;
 
 int sp = 0;
 double val[MAXVAL];
+
+void clear(void) {
+    sp = 0;
+}
 
 int getch(void) {
 
@@ -49,10 +54,12 @@ int getop(char s[]) {
     }
 
     i = 0;
-    if ((c == '-') && (c1 = getch()) == ' ') {
+    if ((c == '-') && ((c1 = getch()) == ' ' || c1 == '\n')) {
+        printf("test");
         return '-';
     }
     else if (c == '-' && isdigit(c1)) {
+        printf("test1");
         s[i] = '-';
         ungetch(c1);
         c = c1;
@@ -102,10 +109,41 @@ double pop(void) {
 
 }
 
+void swap(void) {
+    // Swap the top two elements on the stack
+
+    int op1;
+    int op2;
+
+    if (sp >= 1) {
+        op1 = pop();
+        op2 = pop();
+        push(op1);
+        push(op2);
+    }
+    else {
+        printf("error: not enough values in stack\n");
+    }
+}
+
+double top(void) {
+
+    // Return the top n elements from the stack, don't modify the stack.
+
+    if (sp > 0) {
+        return val[sp - 1];
+    }
+    else {
+        printf("error: stack empty\n");
+        return 0.0;
+    }
+}
+
 int main(void) {
 
     int type;
     double op2;
+    double op1;
     char s[MAXOP];
 
     while ((type = getop(s)) != EOF) {
@@ -121,8 +159,8 @@ int main(void) {
                 push(pop() * pop());
                 break;
             case '-':
-                op2 = pop();
-                push(pop() - op2);
+                swap();
+                push(pop() - pop());
                 break;
             case '/':
                 if ((op2 = pop()) != 0.0) {
@@ -139,6 +177,18 @@ int main(void) {
                 else {
                     printf("error: zero divisor");
                 }
+                break;
+            case '?':
+                // Print top value
+                printf("%lf\n", top());
+                break;
+            case ':':
+                // Duplicate top value
+                push((top()));
+                break;
+            case '_':
+                // Clear stack
+                clear();
                 break;
             case '\n':
                 printf("\t%.8g\n", pop());
