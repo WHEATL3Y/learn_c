@@ -54,7 +54,8 @@ int getop(char s[]) {
     }
 
     i = 0;
-    if ((c == '-') && (c1 = getch()) == ' ') {
+    if ((c == '-') && ((c1 = getch()) == ' ' || c1 == '\n')) {
+        ungetch(c1);
         return '-';
     }
     else if (c == '-' && isdigit(c1)) {
@@ -191,12 +192,15 @@ int main(void) {
             case '?':
                 // Print top value
                 printf("%lf\n", top());
+                break;
             case ':':
                 // Duplicate top value
                 push((top()));
+                break;
             case '_':
                 // Clear stack
                 clear();
+                break;
             case '\n':
                 printf("\t%.8g\n", pop());
                 break;
