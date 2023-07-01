@@ -23,28 +23,21 @@ double val[MAXVAL];
 double var[26];
 double last;
 
-int gets(char s[]) {
+int gets() {
 
     int character;
     int i;
 
     for (i = 0; (character = getchar()) != EOF && character != '\n'; i++) {
-        s[i] = character;
-    }
-    if (character != '\n' && character != EOF) {
-        // We hit the character limit
-        s[i] = '\0';
-        while((character = getchar()) != EOF && character != '\n') {
-            i++;
-        }
+        buf[i] = character;
     }
     if (character == '\n') {
-        s[i] = character;
+        buf[i] = character;
         i++;
-        s[i] = '\0';
+        buf[i] = '\0';
     }
     else {
-        s[i] = '\0';
+        buf[i] = '\0';
     }
     
     return i;
@@ -78,12 +71,12 @@ int getop(char s[]) {
     }
 
     i = 0;
-    if ((c == '-') && ((c1 = buf[bufp + 1]) == ' ' || c1 == '\n')) {
+    if ((c == '-') && ((c1 = buf[bufp]) == ' ' || c1 == '\n')) {
         return '-';
     }
     else if (c == '-' && isdigit(c1)) {
         s[i] = '-';
-        c = buf[++bufp];
+        c = buf[bufp];
     }
 
     if (isdigit(c)) {
@@ -163,15 +156,14 @@ double top(void) {
 int main(void) {
 
     int type;
+    int len;
     double op2;
     double op1;
     char s[MAXOP];
 
-    while (gets(buf)) {
+    while ((len = gets())) {
 
-        printf("%lu\n", strlen(buf));
-        while ((type = getop(s)) != EOF) {
-            /* printf("%d\n", sp); */
+        while ((type = getop(s)) != '\0') {
             switch (type) {
                 case SETVAR:
                     // Set the variable to top value of the stack
@@ -214,7 +206,7 @@ int main(void) {
                     // pow
                     push(pow(pop(), pop()));
                     break;
-                case '\"': 
+                case '"': 
                     // exp
                     push(exp(pop()));
                     break;
