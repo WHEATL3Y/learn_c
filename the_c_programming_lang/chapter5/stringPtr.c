@@ -8,5 +8,6 @@ int main(void) {
 
     char *string = "Hello World\n";
     printf("%s", string);
+    printf("%c", *string++);
     return 0;
 }

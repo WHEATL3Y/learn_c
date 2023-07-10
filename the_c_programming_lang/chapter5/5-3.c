@@ -5,34 +5,36 @@
 #include <stdio.h>
 
 int length(char *);
-char *cat(char *, char *);
+void cat(char *, char *);
 
 int length(char *s) {
 
     int i;
 
-    while ((*s++) != 0) {
+    while (*s++) {
         i++;
     }
 
-    return i;
+    return i - 1;
 
 }
 
-char *cat(char *s, char *t) {
-    
-    s += length(s);
-    while ((*s++ = *t++)) {
-        ;
+void cat(char *s, char *t) {
+  
+    int len = length(s);
+    s += len;
+    while ((*s = *t) != '\0') {
+        ++s;
+        ++t;
     }
 
-    return s;
 }
 
 int main(void) {
 
-    char *string1 = "12345";
-    char *string2 = "67890";
-    printf("%s\n", cat(string1, string2));
+    char string1[100] = "12345";
+    char string2[100] = "67890";
+    cat(string1, string2);
+    printf("%s\n", string1);
     return 0;
 }
