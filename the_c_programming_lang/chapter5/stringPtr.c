@@ -7,7 +7,8 @@
 int main(void) {
 
     char *string = "Hello World\n";
-    printf("%s", string);
-    printf("%c", *string++);
+    printf("%s\n", string);
+    printf("%c\n", *string++);
+    printf("%i\n", *string);
     return 0;
 }
