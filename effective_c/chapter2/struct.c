@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define PRINT_BLANK printf("\n");
+
 int main(void) {
 
     int i;
@@ -23,6 +25,20 @@ int main(void) {
     for (i = 0; i < 2; i++) {
         printf("%s is %d years old\n", people[i].name, people[i].age);
     }
+
+    // Typedef
+    typedef struct Address {
+        int number;
+        char street[255];
+        char city[255];
+        char state[3];
+        int zip;
+    } Address;
+
+    Address home = {6611, "Club Villa Rd", "Parker", "CO", 80134};
+
+    PRINT_BLANK
+    printf("%d %s\n%s, %s %d\n", home.number, home.street, home.city, home.state, home.zip);
 
     return EXIT_SUCCESS;
 }
